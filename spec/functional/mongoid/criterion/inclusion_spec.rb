@@ -1030,10 +1030,6 @@ describe Mongoid::Criterion::Inclusion do
         Person.where(:age => "33").should == [ person ]
       end
 
-      it "typecasts datetimes" do
-        Person.where(:lunch_time => lunch_time.to_s).should == [ person ]
-      end
-
       it "typecasts dates" do
         Person.where({:dob => dob.to_s}).should == [ person ]
       end
