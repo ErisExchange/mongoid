@@ -62,3 +62,4 @@ en:
           "Cannot create scope :%{scope_name}, because of existing method
           %{model_name}.%{scope_name}."
         blank_on_locale: "can't be blank in %{location}"
+        delete_restriction: "Cannot delete %{document} because of dependent %{relation}."
