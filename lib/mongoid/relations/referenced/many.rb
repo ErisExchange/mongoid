@@ -404,7 +404,7 @@ module Mongoid #:nodoc:
         #
         # @since 2.0.0.beta.1
         def criteria
-          Many.criteria(metadata, Conversions.flag(base.id, metadata))
+          Many.criteria(metadata, Conversions.flag(base.send(metadata.primary_key), metadata))
         end
 
         # Perform the necessary cascade operations for documents that just got

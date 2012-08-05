@@ -107,7 +107,7 @@ module Mongoid # :nodoc:
           #
           # @since 2.1.0
           def criteria(metadata, object, type = nil)
-            type.where(:_id => object)
+            type.where(metadata.primary_key.to_sym => object)
           end
 
           # Get the criteria that is used to eager load a relation of this
@@ -125,7 +125,7 @@ module Mongoid # :nodoc:
           def eager_load(metadata, ids)
             raise Errors::EagerLoad.new(metadata.name) if metadata.polymorphic?
             klass, foreign_key = metadata.klass, metadata.foreign_key
-            klass.any_in("_id" => ids).each do |doc|
+            klass.any_in(metadata.primary_key => ids).each do |doc|
               IdentityMap.set(doc)
             end
           end
