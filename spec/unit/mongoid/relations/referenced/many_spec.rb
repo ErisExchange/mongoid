@@ -95,7 +95,7 @@ describe Mongoid::Relations::Referenced::Many do
 
     it "returns the valid options" do
       described_class.valid_options.should ==
-        [ :as, :autosave, :dependent, :foreign_key, :order ]
+        [ :as, :autosave, :dependent, :foreign_key, :order, :primary_key ]
     end
   end
 
