@@ -21,6 +21,10 @@ module Mongoid # :nodoc:
       def initialize(base, target, metadata)
         @base, @target, @metadata = base, target, metadata
       end
+
+      def record_id(base)
+        base.__send__(metadata.primary_key)
+      end
     end
   end
 end

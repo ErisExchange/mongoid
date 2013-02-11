@@ -19,7 +19,7 @@ module Mongoid # :nodoc:
           #
           # @since 2.0.0.rc.1
           def bind
-            base.you_must(metadata.foreign_key_setter, target.id)
+            base.you_must(metadata.foreign_key_setter, record_id(target))
             if metadata.inverse_type
               base.you_must(metadata.inverse_type_setter, target.class.model_name)
             end
