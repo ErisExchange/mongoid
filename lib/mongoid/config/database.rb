@@ -159,7 +159,7 @@ module Mongoid #:nodoc:
           :pool_size => pool_size,
           :logger => logger? ? Mongoid::Logger.new : nil,
           :slave_ok => slave
-        }).merge(self).reject { |k,v| Config.blacklisted_options.include? k }.
+        }).merge(self).reject { |k,v| Config.blacklisted_options.include? k.to_s }.
           inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo}
       end
 
