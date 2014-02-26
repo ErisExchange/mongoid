@@ -38,7 +38,19 @@ module Mongoid #:nodoc:
       # @option options [ Integer ] :max The maximum number of docs in the
       #   capped collection.
       def initialize(master, name, options = {})
-        @collection = master.create_collection(name, options)
+        begin
+          @collection = master.create_collection(name, options)
+        rescue Mongo::OperationFailure => e
+          #
+          # If we get an OperationFailure, it is most likely due to a race condition.
+          # Try once more, this time should succeed because now the collection should
+          # already exist and the race condition will not occur.
+          #
+          # See the following for more info:
+          # https://jira.mongodb.org/browse/SERVER-6992
+          #
+          @collection = master.create_collection(name, options)
+        end
       end
     end
   end
