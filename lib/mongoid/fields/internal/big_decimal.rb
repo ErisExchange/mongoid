@@ -55,7 +55,8 @@ module Mongoid #:nodoc:
         #
         # @since 2.1.0
         def serialize(object)
-          object ? object.to_s : object
+          val = deserialize(object) # use deserialize to normalize decimal string values
+          val ? val.to_s : val
         end
       end
     end
