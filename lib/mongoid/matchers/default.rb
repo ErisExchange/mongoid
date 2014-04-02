@@ -33,6 +33,8 @@ module Mongoid #:nodoc:
       # @since 1.0.0
       def matches?(value)
         attribute.is_a?(Array) && !value.is_a?(Array) ? attribute.include?(value) : value === attribute
+      rescue
+        false # in JRuby, if value is a Time and attribute is nil, an exception is raised (this is likely a JRuby bug)
       end
 
       protected
