@@ -173,6 +173,13 @@ describe Mongoid::Fields::Internal::Time do
         field.serialize(time).to_f.should eq(time.to_f)
       end
 
+      context "with milliseconds" do
+        let!(:time) { Time.at(1431079466, 491000).utc }
+        it "preserves the exact value" do
+          field.serialize(time).should eq(time)
+        end
+      end
+
     end
 
     context "when given an ActiveSupport::TimeWithZone" do
