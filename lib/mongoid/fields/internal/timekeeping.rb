@@ -90,7 +90,8 @@ module Mongoid #:nodoc:
             when ::String
               time.parse(value)
             when ::DateTime
-              time.local(value.year, value.month, value.day, value.hour, value.min, value.sec, value.sec_fraction * 1_000_000)
+              time.public_send(value.utc? ? :utc : :local,
+                               value.year, value.month, value.day, value.hour, value.min, value.sec, value.sec_fraction * 1_000_000)
             when ::Date
               time.local(value.year, value.month, value.day)
             when ::Array
