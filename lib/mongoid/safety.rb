@@ -54,14 +54,37 @@ module Mongoid #:nodoc:
       # @since 2.1.0
       def merge_safety_options(options = {})
         options ||= {}
-        return options if options[:safe]
+        return convert_safety_options_to_mongo_2_6(options) if options[:safe]
 
         unless Threaded.safety_options.nil?
           safety = Threaded.safety_options
         else
           safety = Mongoid.persist_in_safe_mode
         end
-        options.merge!({ :safe => safety })
+
+        convert_safety_options_to_mongo_2_6(options.merge({ :safe => safety }))
+      end
+      def convert_safety_options_to_mongo_2_6(options)
+        writeConcern = {}
+
+        # Instead of intermingling write-concern options into the main options
+        # hash, starting with MongoDB 2.6, they should be specified in a :writeConcern
+        # option.
+
+        # Old style { :safe => true }
+        if (options.include?(:safe))
+          writeConcern[:w] = options.delete(:safe) ? 1 : 0
+        end
+
+        # Newer style { :w => 1, :j => 1 }
+        writeConcern[:w] = options.delete(:w) if options.include?(:w)
+        writeConcern[:j] = options.delete(:j) if options.include?(:j)
+
+        # Unsupported legacy options: :wtimeout and :fsync
+        options.delete(:wtimeout)
+        options.delete(:fsync)
+
+        options.merge!( :writeConcern => writeConcern )
       end
     end
 
